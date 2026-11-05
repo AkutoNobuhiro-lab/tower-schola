@@ -1,38 +1,98 @@
-<!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ブレース型とトグル型の変位比較</title>
-<style>
+<!doctype html><html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>制振と免震｜タワー・スコラ</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#f3f7fa;color:#193044;font-family:system-ui,-apple-system,sans-serif}header{max-width:1100px;margin:auto;padding:24px 20px 16px}h1{font-size:clamp(22px,4vw,30px);margin:0 0 16px}.tabs{display:flex;gap:12px}button{flex:1;font:inherit;font-weight:600;padding:16px;border:1px solid #b9cad6;border-radius:10px;background:white;color:#193044;cursor:pointer}button[aria-selected="true"]{background:#155d83;color:white;border-color:#155d83}button:focus-visible{outline:3px solid #dd8a40;outline-offset:3px}iframe{display:block;width:100%;border:0;min-height:700px}iframe[hidden]{display:none}.hint{font-size:14px;color:#536b7c;margin:12px 0 0}</style>
+<header><h1>タワー・スコラ｜制振と免震のしくみ</h1><div class="tabs" role="tablist" aria-label="説明を選択"><button role="tab" id="t-tab" aria-selected="true" aria-controls="t-frame">① トグル制振</button><button role="tab" id="i-tab" aria-selected="false" aria-controls="i-frame" tabindex="-1">② 免震層</button></div><p class="hint">タブで切り替え、再生ボタンやスライダーで動きを確認できます。</p></header>
+<iframe id="t-frame" role="tabpanel" aria-labelledby="t-tab" title="トグル制振の比較" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;ja&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;&lt;title&gt;ブレース型とトグル型の変位比較&lt;/title&gt;
+&lt;style&gt;
 *{box-sizing:border-box}body{font-family:system-ui,sans-serif;color:#193044;background:#f5f7fa;margin:0;padding:24px;max-width:1100px;margin:auto}h1{font-size:24px}p{line-height:1.7}button{font:inherit;padding:10px 16px;border:1px solid #bac8d4;background:white;border-radius:6px;cursor:pointer}input{width:min(100%,600px)}.controls{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:16px 0}.panels{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{background:white;padding:16px;border-radius:10px}h2{font-size:19px;margin:0 0 8px}svg{width:100%;height:auto;display:block}svg text{font:14px system-ui;fill:#193044}.metric{font-size:19px;font-variant-numeric:tabular-nums}.small{font-size:14px;color:#526577}.bar{height:12px;background:#edf1f5;margin:8px 0}.fill{height:100%}.blue{background:#1479bd}.orange{background:#dc6a21}table{border-collapse:collapse;width:100%;background:white}td,th{padding:12px;text-align:left;border-bottom:1px solid #dae1e7}@media(max-width:700px){body{padding:14px}.panels{grid-template-columns:1fr}} 
-</style></head><body>
-<h1>同じ層間変形でも、ダンパーの動きは変わる</h1>
-<p>梁を同じ量だけ左右に動かした1層の比較。柱脚は固定し、梁は水平を保ちます。</p>
-<div class="controls"><button id="play">▶ 再生</button><button id="stop">一時停止</button><label><input type="checkbox" id="repeat" checked style="width:auto">繰り返す</label><strong id="drift"></strong></div>
-<label for="move">層間変位 δ（−3 ～ ＋3 cm）</label><br><input id="move" type="range" min="-3" max="3" step="0.01" value="0">
-<div class="panels"><section class="panel"><h2>① ブレース型：対角線上に直接配置</h2><svg id="brace" viewBox="0 0 440 340" role="img" aria-label="斜めに直接配置したダンパー"></svg><div class="metric" id="bval"></div><div class="bar"><div id="bbar" class="fill blue"></div></div><div class="small">初期の変位比 |x/δ| ≈ 0.83</div></section>
-<section class="panel"><h2>② トグル型：関節の動きを利用</h2><svg id="toggle" viewBox="0 0 440 340" role="img" aria-label="2本の腕と関節に接続したダンパー"></svg><div class="metric" id="tval"></div><div class="bar"><div id="tbar" class="fill orange"></div></div><div class="small">初期の変位比 |x/δ| ≈ 2.02</div></section></div>
-<p class="small">実線：変形後 ／ 破線：変形前 ／ 色付き筒：ダンパー ／ 灰色の線：長さ一定の腕・接続材<br>フレームの変形は見やすく5倍表示。数値と棒グラフは実変位、左右の棒グラフは同じ縮尺です。＋は伸び、−は縮み。</p>
-<table><tr><th>層間変位 ＋1 cm付近</th><th>ブレース型</th><th>トグル型</th></tr><tr><td>ダンパーの伸縮量（絶対値）</td><td>約0.83 cm</td><td>約2.02 cm</td></tr></table>
-<p>ブレース型では、水平の層間変位のうち、斜材方向の成分がダンパーを動かします。トグル型では、2本の腕の角度変化で関節が移動し、その動きをダンパーに伝えます。この例では伸縮量がブレース型の約2.4倍です。</p>
-<p class="small">説明用の配置であり、タワー・スコラの実配置・設計値ではありません。スパン6 m、階高4 m。トグル腕は各3.714 m。腕と接続材は剛、接合部はピンとする幾何学モデルです。図示倍率を掛けた後に機構の位置を解いているため、描画上の動きと実変位の比は厳密には一致しません。ダンパー性能や架構の柔らかさを含む応答解析ではありません。</p>
-<script>
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;同じ層間変形でも、ダンパーの動きは変わる&lt;/h1&gt;
+
+&lt;div class=&quot;controls&quot;&gt;&lt;button id=&quot;play&quot;&gt;▶ 再生&lt;/button&gt;&lt;button id=&quot;stop&quot;&gt;一時停止&lt;/button&gt;&lt;label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;repeat&quot; checked style=&quot;width:auto&quot;&gt;繰り返す&lt;/label&gt;&lt;strong id=&quot;drift&quot;&gt;&lt;/strong&gt;&lt;/div&gt;
+&lt;label for=&quot;move&quot;&gt;層間変位 δ（−10 ～ ＋10 cm）&lt;/label&gt;&lt;br&gt;&lt;input id=&quot;move&quot; type=&quot;range&quot; min=&quot;-10&quot; max=&quot;10&quot; step=&quot;0.01&quot; value=&quot;0&quot;&gt;
+&lt;div class=&quot;panels&quot;&gt;&lt;section class=&quot;panel&quot;&gt;&lt;h2&gt;① ブレース型：対角線上に直接配置&lt;/h2&gt;&lt;svg id=&quot;brace&quot; viewBox=&quot;0 0 440 340&quot; role=&quot;img&quot; aria-label=&quot;斜めに直接配置したダンパー&quot;&gt;&lt;/svg&gt;&lt;div class=&quot;metric&quot; id=&quot;bval&quot;&gt;&lt;/div&gt;&lt;div class=&quot;bar&quot;&gt;&lt;div id=&quot;bbar&quot; class=&quot;fill blue&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+&lt;section class=&quot;panel&quot;&gt;&lt;h2&gt;② トグル型：関節の動きを利用&lt;/h2&gt;&lt;svg id=&quot;toggle&quot; viewBox=&quot;0 0 440 340&quot; role=&quot;img&quot; aria-label=&quot;2本の腕と関節に接続したダンパー&quot;&gt;&lt;/svg&gt;&lt;div class=&quot;metric&quot; id=&quot;tval&quot;&gt;&lt;/div&gt;&lt;div class=&quot;bar&quot;&gt;&lt;div id=&quot;tbar&quot; class=&quot;fill orange&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;
+&lt;p class=&quot;small&quot;&gt;実線：変形後 ／ 破線：変形前 ／ 色付き筒：ダンパー ／ 灰色の線：長さ一定の腕・接続材&lt;br&gt;フレームの変形は見やすく2倍表示。数値と棒グラフは実変位、左右の棒グラフは同じ縮尺です。＋は伸び、−は縮み。&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;th&gt;層間変位 ＋1 cm付近&lt;/th&gt;&lt;th&gt;ブレース型&lt;/th&gt;&lt;th&gt;トグル型&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;ダンパーの伸縮量（絶対値）&lt;/td&gt;&lt;td&gt;約0.83 cm&lt;/td&gt;&lt;td&gt;約2.02 cm&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p&gt;ブレース型では、水平の層間変位のうち、斜材方向の成分がダンパーを動かします。トグル型では、2本の腕の角度変化で関節が移動し、その動きをダンパーに伝えます。小さな層間変位でも、ダンパーの伸縮を大きくできます。&lt;/p&gt;
+
+&lt;script&gt;
 const W=6,H=4,D=Math.hypot(W,H),L=D/2*1.03;
 function knee(u){const x=W+u,d=Math.hypot(x,H),q=Math.sqrt(L*L-d*d/4);return [x/2-H/d*q,H/2+x/d*q]}
-const dist=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]);
+const dist=(a,b)=&gt;Math.hypot(a[0]-b[0],a[1]-b[1]);
 const p0=knee(0),t0=dist(p0,[W,0]);
-const pos=p=>[45+p[0]*50,275-p[1]*50];
-const path=ps=>ps.map((p,i)=>(i?'L':'M')+pos(p).join(',')).join(' ');
-function line(a,b,color,width=3,dash=''){return `<path d="${path([a,b])}" fill="none" stroke="${color}" stroke-width="${width}" ${dash?'stroke-dasharray="'+dash+'"':''}/>`}
-function damper(a,b,color){const p=pos(a),q=pos(b),dx=q[0]-p[0],dy=q[1]-p[1],len=Math.hypot(dx,dy),ang=Math.atan2(dy,dx)*180/Math.PI;return `<g transform="translate(${p}) rotate(${ang})"><line x1="0" x2="${len}" stroke="${color}" stroke-width="4"/><rect x="${len*.36}" y="-8" width="${len*.28}" height="16" rx="2" fill="white" stroke="${color}" stroke-width="3"/></g>`}
-function render(id,u,toggle){const A=[0,0],B=[W+u,H],C=[W,0],E=[u,H],P=knee(u),color=toggle?'#dc6a21':'#1479bd';let s='<title>'+(toggle?'トグル型':'ブレース型')+'</title>';
- s+=line(A,[0,H],'#b9c5ce',2,'5 5')+line([0,H],[W,H],'#b9c5ce',2,'5 5')+line([W,H],C,'#b9c5ce',2,'5 5');
- s+=line(A,E,'#304859',5)+line(E,B,'#304859',7)+line(B,C,'#304859',5)+line([-.5,-.15],[6.5,-.15],'#526577',2);
- if(toggle){s+=line(A,p0,'#c6cdd3',2,'5 5')+line(p0,[W,H],'#c6cdd3',2,'5 5')+line(A,P,'#657481',5)+line(P,B,'#657481',5)+damper(C,P,color);const xy=pos(P);s+=`<circle cx="${xy[0]}" cy="${xy[1]}" r="6" fill="white" stroke="${color}" stroke-width="3"/><text x="${xy[0]-12}" y="${xy[1]-15}" text-anchor="end">関節</text>`}
- else{s+=line(A,[W,H],'#c6cdd3',2,'5 5')+damper(A,B,color)}
- s+=`<text x="45" y="36">梁の水平移動 δ →</text><text x="45" y="313">固定柱脚</text><text x="320" y="313">固定柱脚</text>`;
+const pos=p=&gt;[45+p[0]*50,275-p[1]*50];
+const path=ps=&gt;ps.map((p,i)=&gt;(i?&#x27;L&#x27;:&#x27;M&#x27;)+pos(p).join(&#x27;,&#x27;)).join(&#x27; &#x27;);
+function line(a,b,color,width=3,dash=&#x27;&#x27;){return `&lt;path d=&quot;${path([a,b])}&quot; fill=&quot;none&quot; stroke=&quot;${color}&quot; stroke-width=&quot;${width}&quot; ${dash?&#x27;stroke-dasharray=&quot;&#x27;+dash+&#x27;&quot;&#x27;:&#x27;&#x27;}/&gt;`}
+function damper(a,b,color){const p=pos(a),q=pos(b),dx=q[0]-p[0],dy=q[1]-p[1],len=Math.hypot(dx,dy),ang=Math.atan2(dy,dx)*180/Math.PI;return `&lt;g transform=&quot;translate(${p}) rotate(${ang})&quot;&gt;&lt;line x1=&quot;0&quot; x2=&quot;${len}&quot; stroke=&quot;${color}&quot; stroke-width=&quot;4&quot;/&gt;&lt;rect x=&quot;${len*.36}&quot; y=&quot;-8&quot; width=&quot;${len*.28}&quot; height=&quot;16&quot; rx=&quot;2&quot; fill=&quot;white&quot; stroke=&quot;${color}&quot; stroke-width=&quot;3&quot;/&gt;&lt;/g&gt;`}
+function render(id,u,toggle){const A=[0,0],B=[W+u,H],C=[W,0],E=[u,H],P=knee(u),color=toggle?&#x27;#dc6a21&#x27;:&#x27;#1479bd&#x27;;let s=&#x27;&lt;title&gt;&#x27;+(toggle?&#x27;トグル型&#x27;:&#x27;ブレース型&#x27;)+&#x27;&lt;/title&gt;&#x27;;
+ s+=line(A,[0,H],&#x27;#b9c5ce&#x27;,2,&#x27;5 5&#x27;)+line([0,H],[W,H],&#x27;#b9c5ce&#x27;,2,&#x27;5 5&#x27;)+line([W,H],C,&#x27;#b9c5ce&#x27;,2,&#x27;5 5&#x27;);
+ s+=line(A,E,&#x27;#304859&#x27;,5)+line(E,B,&#x27;#304859&#x27;,7)+line(B,C,&#x27;#304859&#x27;,5)+line([-.5,-.15],[6.5,-.15],&#x27;#526577&#x27;,2);
+ if(toggle){s+=line(A,p0,&#x27;#c6cdd3&#x27;,2,&#x27;5 5&#x27;)+line(p0,[W,H],&#x27;#c6cdd3&#x27;,2,&#x27;5 5&#x27;)+line(A,P,&#x27;#657481&#x27;,5)+line(P,B,&#x27;#657481&#x27;,5)+damper(C,P,color);const xy=pos(P);s+=`&lt;circle cx=&quot;${xy[0]}&quot; cy=&quot;${xy[1]}&quot; r=&quot;6&quot; fill=&quot;white&quot; stroke=&quot;${color}&quot; stroke-width=&quot;3&quot;/&gt;&lt;text x=&quot;${xy[0]-12}&quot; y=&quot;${xy[1]-15}&quot; text-anchor=&quot;end&quot;&gt;てこの原理&lt;/text&gt;`}
+ else{s+=line(A,[W,H],&#x27;#c6cdd3&#x27;,2,&#x27;5 5&#x27;)+damper(A,B,color)}
+ s+=`&lt;text x=&quot;45&quot; y=&quot;36&quot;&gt;梁の水平移動 δ →&lt;/text&gt;&lt;text x=&quot;45&quot; y=&quot;313&quot;&gt;固定柱脚&lt;/text&gt;&lt;text x=&quot;320&quot; y=&quot;313&quot;&gt;固定柱脚&lt;/text&gt;`;
  document.getElementById(id).innerHTML=s;
 }
-const slider=document.getElementById('move');let raf=0,start=null;
-function draw(){const cm=+slider.value,u=cm/100,b=(Math.hypot(W+u,H)-D)*100,t=(dist(knee(u),[W,0])-t0)*100;render('brace',u*5,false);render('toggle',u*5,true);document.getElementById('drift').textContent='層間変位 δ = '+cm.toFixed(2)+' cm';document.getElementById('bval').textContent='伸縮量 x = '+b.toFixed(2)+' cm';document.getElementById('tval').textContent='伸縮量 x = '+t.toFixed(2)+' cm';document.getElementById('bbar').style.width=Math.abs(b)/7*100+'%';document.getElementById('tbar').style.width=Math.abs(t)/7*100+'%'}
+const slider=document.getElementById(&#x27;move&#x27;);let raf=0,start=null;
+function draw(){const cm=+slider.value,u=cm/100,b=(Math.hypot(W+u,H)-D)*100,t=(dist(knee(u),[W,0])-t0)*100;render(&#x27;brace&#x27;,u*2,false);render(&#x27;toggle&#x27;,u*2,true);document.getElementById(&#x27;drift&#x27;).textContent=&#x27;層間変位 δ = &#x27;+cm.toFixed(2)+&#x27; cm&#x27;;document.getElementById(&#x27;bval&#x27;).textContent=&#x27;伸縮量 x = &#x27;+b.toFixed(2)+&#x27; cm&#x27;;document.getElementById(&#x27;tval&#x27;).textContent=&#x27;伸縮量 x = &#x27;+t.toFixed(2)+&#x27; cm&#x27;;document.getElementById(&#x27;bbar&#x27;).style.width=Math.abs(b)/25*100+&#x27;%&#x27;;document.getElementById(&#x27;tbar&#x27;).style.width=Math.abs(t)/25*100+&#x27;%&#x27;}
 function stop(){cancelAnimationFrame(raf)}
-function tick(t){if(start===null)start=t;let phase=(t-start)/7000;if(phase>=1&&!document.getElementById('repeat').checked){slider.value=0;draw();return}slider.value=(3*Math.sin(phase*2*Math.PI)).toFixed(2);draw();raf=requestAnimationFrame(tick)}
-document.getElementById('play').onclick=()=>{stop();start=null;raf=requestAnimationFrame(tick)};document.getElementById('stop').onclick=stop;slider.oninput=()=>{stop();draw()};draw();if(!matchMedia('(prefers-reduced-motion: reduce)').matches)raf=requestAnimationFrame(tick);
-</script></body></html>
+function tick(t){if(start===null)start=t;let phase=(t-start)/7000;if(phase&gt;=1&amp;&amp;!document.getElementById(&#x27;repeat&#x27;).checked){slider.value=0;draw();return}slider.value=(10*Math.sin(phase*2*Math.PI)).toFixed(2);draw();raf=requestAnimationFrame(tick)}
+document.getElementById(&#x27;play&#x27;).onclick=()=&gt;{stop();start=null;raf=requestAnimationFrame(tick)};document.getElementById(&#x27;stop&#x27;).onclick=stop;slider.oninput=()=&gt;{stop();draw()};draw();if(!matchMedia(&#x27;(prefers-reduced-motion: reduce)&#x27;).matches)raf=requestAnimationFrame(tick);
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;
+"></iframe><iframe id="i-frame" role="tabpanel" aria-labelledby="i-tab" title="免震層のしくみ" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;ja&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;免震層の仕組み｜タワー・スコラ&lt;/title&gt;
+&lt;style&gt;
+:root{color-scheme:light;font-family:system-ui,-apple-system,&#x27;Yu Gothic&#x27;,sans-serif;color:#193044;background:#f3f7fa}*{box-sizing:border-box}body{max-width:1100px;margin:auto;padding:28px 20px 40px}h1{font-size:clamp(24px,4vw,34px);margin:8px 0 16px}h2{font-size:21px;margin:0 0 10px}p{line-height:1.8}.eyebrow{color:#476d86;font-size:14px;letter-spacing:.1em}.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:24px 0}button{font:inherit;border:1px solid #bccdd8;border-radius:8px;background:white;color:#193044;padding:11px 19px;cursor:pointer;min-height:44px}button[aria-pressed=true],#play{background:#155d83;color:white;border-color:#155d83}button:focus-visible,input:focus-visible{outline:3px solid #d37b27;outline-offset:3px}.tabs{display:flex;gap:10px;flex-wrap:wrap}.panels{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.card{background:white;padding:20px;border-radius:14px}.card p{margin:8px 0 0}.orange{color:#b3601b}.blue{color:#126591}canvas{display:block;width:100%;height:auto}.note{font-size:13px;color:#5b6e7c}.callout{font-size:19px;color:#155d83;margin:20px 0}.slider{width:100%;accent-color:#155d83;min-height:36px}footer{border-top:1px solid #d5e0e8;margin-top:30px;padding-top:16px}a{color:#155d83}section[hidden]{display:none}.rubber-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center}.label{font-weight:600;margin-top:20px}.progress-label{display:flex;justify-content:space-between;gap:12px}@media(max-width:650px){body{padding:20px 14px}.panels,.rubber-grid{grid-template-columns:1fr}.card{padding:16px}h2{font-size:19px}}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;div class=&quot;eyebrow&quot;&gt;タワー・スコラ ／ 免震のしくみ&lt;/div&gt;
+&lt;h1&gt;建物を支えながら、揺れを伝わりにくく。&lt;/h1&gt;
+&lt;p&gt;免震層が横に変形することで、地面の急な動きが上の建物に伝わるのを抑えます。&lt;/p&gt;
+&lt;div class=&quot;tabs&quot; role=&quot;group&quot; aria-label=&quot;説明の切り替え&quot;&gt;&lt;button id=&quot;compare-tab&quot; aria-pressed=&quot;true&quot;&gt;① 非免震と免震の比較&lt;/button&gt;&lt;button id=&quot;rubber-tab&quot; aria-pressed=&quot;false&quot;&gt;② 積層ゴムの拡大&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;controls&quot;&gt;&lt;button id=&quot;play&quot;&gt;一時停止&lt;/button&gt;&lt;button id=&quot;reset&quot;&gt;初期位置へ&lt;/button&gt;&lt;label for=&quot;speed&quot;&gt;再生速度&lt;/label&gt;&lt;select id=&quot;speed&quot; style=&quot;font:inherit;padding:10px&quot;&gt;&lt;option value=&quot;0.5&quot;&gt;ゆっくり&lt;/option&gt;&lt;option value=&quot;1&quot; selected&gt;標準&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
+&lt;div class=&quot;progress-label&quot;&gt;&lt;label for=&quot;phase&quot;&gt;動きを手で確認&lt;/label&gt;&lt;span&gt;左・中央・右へ動かせます&lt;/span&gt;&lt;/div&gt;&lt;input id=&quot;phase&quot; class=&quot;slider&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1000&quot; value=&quot;0&quot; aria-label=&quot;揺れの1周期内の位置&quot;&gt;
+&lt;section id=&quot;compare&quot;&gt;&lt;div class=&quot;panels&quot;&gt;&lt;div class=&quot;card&quot;&gt;&lt;h2 class=&quot;orange&quot;&gt;非免震&lt;/h2&gt;&lt;canvas id=&quot;normal&quot; width=&quot;560&quot; height=&quot;370&quot; role=&quot;img&quot; aria-label=&quot;地面の揺れが建物に伝わり、建物も変形する模式アニメーション&quot;&gt;&lt;/canvas&gt;&lt;p&gt;地面の動きが、建物に伝わります。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;card&quot;&gt;&lt;h2 class=&quot;blue&quot;&gt;免震&lt;/h2&gt;&lt;canvas id=&quot;isolated&quot; width=&quot;560&quot; height=&quot;370&quot; role=&quot;img&quot; aria-label=&quot;免震装置が横に変形し、上の建物の揺れが小さくなる模式アニメーション&quot;&gt;&lt;/canvas&gt;&lt;p&gt;免震層が変形し、上の建物の揺れを抑えます。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;p class=&quot;callout&quot;&gt;左右の地面には、同じ動きを与えています。&lt;/p&gt;&lt;/section&gt;
+&lt;section id=&quot;rubber&quot; hidden&gt;&lt;div class=&quot;card rubber-grid&quot;&gt;&lt;canvas id=&quot;detail&quot; width=&quot;600&quot; height=&quot;410&quot; role=&quot;img&quot; aria-label=&quot;鋼板とゴムを重ねた積層ゴムが水平方向に変形し、内部の錫も変形する断面模式図&quot;&gt;&lt;/canvas&gt;&lt;div&gt;&lt;h2&gt;重さを支え、横には柔らかく。&lt;/h2&gt;&lt;p class=&quot;label blue&quot;&gt;ゴムと鋼板を交互に重ねる&lt;/p&gt;&lt;p&gt;鋼板がゴムの横へのはらみ出しを抑え、建物の重さを支えます。水平方向には柔らかく変形します。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;p class=&quot;note&quot;&gt;積層ゴムの断面イメージ。&lt;/p&gt;&lt;/section&gt;
+&lt;footer&gt;&lt;h2&gt;タワー・スコラでは&lt;/h2&gt;&lt;p&gt;地下1階と1階の間に免震層を設けています。錫プラグ入り積層ゴム17基、天然ゴム積層ゴム7基、直動転がり支承6基を組み合わせています。&lt;/p&gt;&lt;p class=&quot;note&quot;&gt;建物情報の出典：&lt;a href=&quot;https://www.arch.cst.nihon-u.ac.jp/wordpress/wp-content/uploads/2023/02/SK_2019_04.pdf&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;日本大学理工学部建築学科『駿建』2019年4月号 p.6&lt;/a&gt;&lt;/p&gt;&lt;/footer&gt;
+&lt;script&gt;
+(()=&gt;{&#x27;use strict&#x27;;
+const $=id=&gt;document.getElementById(id),tau=2*Math.PI;let phase=0,last=null,playing=!matchMedia(&#x27;(prefers-reduced-motion: reduce)&#x27;).matches;
+const colors={ink:&#x27;#193044&#x27;,blue:&#x27;#1479bd&#x27;,orange:&#x27;#d27625&#x27;,gray:&#x27;#788b98&#x27;};
+function line(c,x,y,X,Y,color,w=3){c.strokeStyle=color;c.lineWidth=w;c.beginPath();c.moveTo(x,y);c.lineTo(X,Y);c.stroke()}
+function rect(c,x,y,w,h,col){c.fillStyle=col;c.fillRect(x,y,w,h)}
+function text(c,x,y,t,size=18,col=colors.ink){c.font=size+&#x27;px system-ui,sans-serif&#x27;;c.fillStyle=col;c.fillText(t,x,y)}
+function rubber(c,x,y,bot,top,w,h,core=false){for(let j=0;j&lt;10;j++){let a=x+top+(bot-top)*j/10,b=x+top+(bot-top)*(j+1)/10,Y=y+j*h/10;c.fillStyle=j%2?&#x27;#d7e3e9&#x27;:&#x27;#6e9db2&#x27;;c.beginPath();c.moveTo(a-w/2,Y);c.lineTo(a+w/2,Y);c.lineTo(b+w/2,Y+h/10);c.lineTo(b-w/2,Y+h/10);c.closePath();c.fill()}rect(c,x+top-w/2-6,y-4,w+12,6,colors.ink);rect(c,x+bot-w/2-6,y+h-2,w+12,6,colors.ink);if(core)line(c,x+top,y,x+bot,y+h,colors.orange,13)}
+function building(id,iso){let c=$(id).getContext(&#x27;2d&#x27;);c.clearRect(0,0,560,370);let g=25*Math.sin(phase),b=iso?6*Math.sin(phase):g,roof=iso?b:39*Math.sin(phase),color=iso?colors.blue:colors.orange;
+ // 地表面と1階床を同じ高さに。免震装置は地表より下のピットに置く。
+ if(iso){
+ rect(c,20+g,245,85,100,&#x27;#d9d1c2&#x27;);rect(c,415+g,245,125,100,&#x27;#d9d1c2&#x27;);
+ rect(c,95+g,245,10,85,&#x27;#879aa6&#x27;);rect(c,415+g,245,10,85,&#x27;#879aa6&#x27;);rect(c,95+g,312,330,18,&#x27;#879aa6&#x27;);
+ line(c,20+g,245,105+g,245,colors.gray,3);line(c,415+g,245,540+g,245,colors.gray,3);
+ }else{rect(c,20+g,245,520,100,&#x27;#d9d1c2&#x27;);rect(c,147+g,245,226,25,&#x27;#879aa6&#x27;);line(c,20+g,245,540+g,245,colors.gray,3)}
+ c.fillStyle=&#x27;#e5eef4&#x27;;c.strokeStyle=color;c.lineWidth=4;c.beginPath();c.moveTo(165+roof,30);c.lineTo(355+roof,30);c.lineTo(355+b,245);c.lineTo(165+b,245);c.closePath();c.fill();c.stroke();
+ for(let j=0;j&lt;5;j++)for(let k=0;k&lt;4;k++){let y=45+j*39,s=roof+(b-roof)*(y-30)/215;rect(c,180+k*43+s,y,25,22,&#x27;white&#x27;)}
+ line(c,147+b,245,373+b,245,colors.ink,6);
+ text(c,435+g,233,&#x27;地表面&#x27;,16);text(c,300+b,233,&#x27;1階&#x27;,16);
+ if(iso){for(let x of [180,260,340])rubber(c,x,255,g,b,48,53);
+ text(c,190+g,349,&#x27;地下の免震ピット&#x27;,16,colors.blue);
+ // 移動する床とピット壁との空間を表示する。
+ let left=105+g,right=147+b;line(c,left,222,right,222,colors.blue,2);line(c,left,217,left,227,colors.blue,2);line(c,right,217,right,227,colors.blue,2);
+ text(c,23,184,&#x27;クリアランス&#x27;,15,colors.blue);line(c,91,190,(left+right)/2,216,colors.blue,1);
+ text(c,435+g,286,&#x27;免震層&#x27;,16,colors.blue);line(c,426+g,282,375+b,282,colors.blue,1);
+ }else{text(c,198+g,310,&#x27;地盤・基礎&#x27;,16,colors.gray)}
+ text(c,180,369,&#x27;← 地面側の揺れ →&#x27;,17,colors.gray)
+}
+function detail(){let c=$(&#x27;detail&#x27;).getContext(&#x27;2d&#x27;);c.clearRect(0,0,600,410);let g=50*Math.sin(phase),u=12*Math.sin(phase);rect(c,125+u,45,350,42,&#x27;#dae8f0&#x27;);text(c,195+u,72,&#x27;上の建物を支える&#x27;,20);for(let x of [190,300,410]){line(c,x+u,5,x+u,37,colors.blue,2);line(c,x+u,37,x+u-5,28,colors.blue,2);line(c,x+u,37,x+u+5,28,colors.blue,2)}line(c,300+u,87,300+u,105,colors.ink,5);rubber(c,300,110,g,u,270,195,false);line(c,300+g,309,300+g,329,colors.ink,5);rect(c,110+g,333,380,45,&#x27;#cdd6dd&#x27;);text(c,190+g,362,&#x27;← 地面側が動く →&#x27;,20)}
+function draw(){building(&#x27;normal&#x27;,false);building(&#x27;isolated&#x27;,true);detail();$(&#x27;phase&#x27;).value=Math.round(phase/tau*1000)}
+function setPlay(v){playing=v;$(&#x27;play&#x27;).textContent=v?&#x27;一時停止&#x27;:&#x27;再生&#x27;}
+$(&#x27;play&#x27;).onclick=()=&gt;setPlay(!playing);$(&#x27;reset&#x27;).onclick=()=&gt;{setPlay(false);phase=0;draw()};$(&#x27;phase&#x27;).oninput=()=&gt;{setPlay(false);phase=Number($(&#x27;phase&#x27;).value)/1000*tau;draw()};
+for(let key of [&#x27;compare&#x27;,&#x27;rubber&#x27;])$(key+&#x27;-tab&#x27;).onclick=()=&gt;{for(let other of [&#x27;compare&#x27;,&#x27;rubber&#x27;]){$(other).hidden=key!==other;$(other+&#x27;-tab&#x27;).setAttribute(&#x27;aria-pressed&#x27;,String(key===other))}draw()};
+function tick(t){if(last!==null&amp;&amp;playing)phase=(phase+Math.min(t-last,100)/4000*tau*Number($(&#x27;speed&#x27;).value))%tau;last=t;draw();requestAnimationFrame(tick)}
+setPlay(playing);draw();requestAnimationFrame(tick);
+})();
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;
+" hidden></iframe>
+<script>
+const keys=['t','i'];function resize(f){if(!f.hidden&&f.contentDocument){f.style.height=(f.contentDocument.body.scrollHeight+64)+'px'}}
+function select(key){for(const k of keys){let active=k===key,b=document.getElementById(k+'-tab'),f=document.getElementById(k+'-frame');b.setAttribute('aria-selected',active);b.tabIndex=active?0:-1;f.hidden=!active;resize(f)}}
+for(const k of keys){let b=document.getElementById(k+'-tab'),f=document.getElementById(k+'-frame');b.onclick=()=>select(k);b.onkeydown=e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();let next=e.key==='Home'?'t':e.key==='End'?'i':k==='t'?'i':'t';select(next);document.getElementById(next+'-tab').focus()}};f.onload=()=>{resize(f);new ResizeObserver(()=>resize(f)).observe(f.contentDocument.body)}}window.addEventListener('resize',()=>keys.forEach(k=>resize(document.getElementById(k+'-frame'))));
+</script></html>
