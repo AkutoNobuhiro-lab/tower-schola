@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ブレース型とトグル型の変位比較</title>
+<style>
+*{box-sizing:border-box}body{font-family:system-ui,sans-serif;color:#193044;background:#f5f7fa;margin:0;padding:24px;max-width:1100px;margin:auto}h1{font-size:24px}p{line-height:1.7}button{font:inherit;padding:10px 16px;border:1px solid #bac8d4;background:white;border-radius:6px;cursor:pointer}input{width:min(100%,600px)}.controls{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:16px 0}.panels{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{background:white;padding:16px;border-radius:10px}h2{font-size:19px;margin:0 0 8px}svg{width:100%;height:auto;display:block}svg text{font:14px system-ui;fill:#193044}.metric{font-size:19px;font-variant-numeric:tabular-nums}.small{font-size:14px;color:#526577}.bar{height:12px;background:#edf1f5;margin:8px 0}.fill{height:100%}.blue{background:#1479bd}.orange{background:#dc6a21}table{border-collapse:collapse;width:100%;background:white}td,th{padding:12px;text-align:left;border-bottom:1px solid #dae1e7}@media(max-width:700px){body{padding:14px}.panels{grid-template-columns:1fr}} 
+</style></head><body>
+<h1>同じ層間変形でも、ダンパーの動きは変わる</h1>
+<p>梁を同じ量だけ左右に動かした1層の比較。柱脚は固定し、梁は水平を保ちます。</p>
+<div class="controls"><button id="play">▶ 再生</button><button id="stop">一時停止</button><label><input type="checkbox" id="repeat" checked style="width:auto">繰り返す</label><strong id="drift"></strong></div>
+<label for="move">層間変位 δ（−3 ～ ＋3 cm）</label><br><input id="move" type="range" min="-3" max="3" step="0.01" value="0">
+<div class="panels"><section class="panel"><h2>① ブレース型：対角線上に直接配置</h2><svg id="brace" viewBox="0 0 440 340" role="img" aria-label="斜めに直接配置したダンパー"></svg><div class="metric" id="bval"></div><div class="bar"><div id="bbar" class="fill blue"></div></div><div class="small">初期の変位比 |x/δ| ≈ 0.83</div></section>
+<section class="panel"><h2>② トグル型：関節の動きを利用</h2><svg id="toggle" viewBox="0 0 440 340" role="img" aria-label="2本の腕と関節に接続したダンパー"></svg><div class="metric" id="tval"></div><div class="bar"><div id="tbar" class="fill orange"></div></div><div class="small">初期の変位比 |x/δ| ≈ 2.02</div></section></div>
+<p class="small">実線：変形後 ／ 破線：変形前 ／ 色付き筒：ダンパー ／ 灰色の線：長さ一定の腕・接続材<br>フレームの変形は見やすく5倍表示。数値と棒グラフは実変位、左右の棒グラフは同じ縮尺です。＋は伸び、−は縮み。</p>
+<table><tr><th>層間変位 ＋1 cm付近</th><th>ブレース型</th><th>トグル型</th></tr><tr><td>ダンパーの伸縮量（絶対値）</td><td>約0.83 cm</td><td>約2.02 cm</td></tr></table>
+<p>ブレース型では、水平の層間変位のうち、斜材方向の成分がダンパーを動かします。トグル型では、2本の腕の角度変化で関節が移動し、その動きをダンパーに伝えます。この例では伸縮量がブレース型の約2.4倍です。</p>
+<p class="small">説明用の配置であり、タワー・スコラの実配置・設計値ではありません。スパン6 m、階高4 m。トグル腕は各3.714 m。腕と接続材は剛、接合部はピンとする幾何学モデルです。図示倍率を掛けた後に機構の位置を解いているため、描画上の動きと実変位の比は厳密には一致しません。ダンパー性能や架構の柔らかさを含む応答解析ではありません。</p>
+<script>
+const W=6,H=4,D=Math.hypot(W,H),L=D/2*1.03;
+function knee(u){const x=W+u,d=Math.hypot(x,H),q=Math.sqrt(L*L-d*d/4);return [x/2-H/d*q,H/2+x/d*q]}
+const dist=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]);
+const p0=knee(0),t0=dist(p0,[W,0]);
+const pos=p=>[45+p[0]*50,275-p[1]*50];
+const path=ps=>ps.map((p,i)=>(i?'L':'M')+pos(p).join(',')).join(' ');
+function line(a,b,color,width=3,dash=''){return `<path d="${path([a,b])}" fill="none" stroke="${color}" stroke-width="${width}" ${dash?'stroke-dasharray="'+dash+'"':''}/>`}
+function damper(a,b,color){const p=pos(a),q=pos(b),dx=q[0]-p[0],dy=q[1]-p[1],len=Math.hypot(dx,dy),ang=Math.atan2(dy,dx)*180/Math.PI;return `<g transform="translate(${p}) rotate(${ang})"><line x1="0" x2="${len}" stroke="${color}" stroke-width="4"/><rect x="${len*.36}" y="-8" width="${len*.28}" height="16" rx="2" fill="white" stroke="${color}" stroke-width="3"/></g>`}
+function render(id,u,toggle){const A=[0,0],B=[W+u,H],C=[W,0],E=[u,H],P=knee(u),color=toggle?'#dc6a21':'#1479bd';let s='<title>'+(toggle?'トグル型':'ブレース型')+'</title>';
+ s+=line(A,[0,H],'#b9c5ce',2,'5 5')+line([0,H],[W,H],'#b9c5ce',2,'5 5')+line([W,H],C,'#b9c5ce',2,'5 5');
+ s+=line(A,E,'#304859',5)+line(E,B,'#304859',7)+line(B,C,'#304859',5)+line([-.5,-.15],[6.5,-.15],'#526577',2);
+ if(toggle){s+=line(A,p0,'#c6cdd3',2,'5 5')+line(p0,[W,H],'#c6cdd3',2,'5 5')+line(A,P,'#657481',5)+line(P,B,'#657481',5)+damper(C,P,color);const xy=pos(P);s+=`<circle cx="${xy[0]}" cy="${xy[1]}" r="6" fill="white" stroke="${color}" stroke-width="3"/><text x="${xy[0]-12}" y="${xy[1]-15}" text-anchor="end">関節</text>`}
+ else{s+=line(A,[W,H],'#c6cdd3',2,'5 5')+damper(A,B,color)}
+ s+=`<text x="45" y="36">梁の水平移動 δ →</text><text x="45" y="313">固定柱脚</text><text x="320" y="313">固定柱脚</text>`;
+ document.getElementById(id).innerHTML=s;
+}
+const slider=document.getElementById('move');let raf=0,start=null;
+function draw(){const cm=+slider.value,u=cm/100,b=(Math.hypot(W+u,H)-D)*100,t=(dist(knee(u),[W,0])-t0)*100;render('brace',u*5,false);render('toggle',u*5,true);document.getElementById('drift').textContent='層間変位 δ = '+cm.toFixed(2)+' cm';document.getElementById('bval').textContent='伸縮量 x = '+b.toFixed(2)+' cm';document.getElementById('tval').textContent='伸縮量 x = '+t.toFixed(2)+' cm';document.getElementById('bbar').style.width=Math.abs(b)/7*100+'%';document.getElementById('tbar').style.width=Math.abs(t)/7*100+'%'}
+function stop(){cancelAnimationFrame(raf)}
+function tick(t){if(start===null)start=t;let phase=(t-start)/7000;if(phase>=1&&!document.getElementById('repeat').checked){slider.value=0;draw();return}slider.value=(3*Math.sin(phase*2*Math.PI)).toFixed(2);draw();raf=requestAnimationFrame(tick)}
+document.getElementById('play').onclick=()=>{stop();start=null;raf=requestAnimationFrame(tick)};document.getElementById('stop').onclick=stop;slider.oninput=()=>{stop();draw()};draw();if(!matchMedia('(prefers-reduced-motion: reduce)').matches)raf=requestAnimationFrame(tick);
+</script></body></html>
